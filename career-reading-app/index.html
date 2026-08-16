@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Career English 音読トレーナー — 500回チャレンジ</title>
+<style>
+  :root{
+    --bg:#f6f5f1;
+    --panel:#ffffff;
+    --ink:#26241f;
+    --ink-soft:#6b6659;
+    --accent:#a8763e;
+    --accent-dark:#7c5527;
+    --accent-soft:#f0e4d3;
+    --line:#e6e1d6;
+    --good:#4b7c5c;
+    --danger:#b1503f;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,0.06),0 6px 20px rgba(30,25,15,0.05);
+    --pat-star-bg: rgba(240,171,45,0.5);
+    --pat-star-text:#5c3d05;
+    --pat-norm-bg: rgba(83,155,224,0.3);
+    --pat-norm-text:#173856;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1b1a17;
+      --panel:#242220;
+      --ink:#ece7dc;
+      --ink-soft:#a49d8c;
+      --accent:#d3a66b;
+      --accent-dark:#e6c08a;
+      --accent-soft:#3a3226;
+      --line:#37342c;
+      --good:#7fb894;
+      --danger:#e0796a;
+      --shadow:0 1px 2px rgba(0,0,0,0.3),0 6px 24px rgba(0,0,0,0.35);
+      --pat-star-bg: rgba(240,171,45,0.38);
+      --pat-star-text:#ffdc9a;
+      --pat-norm-bg: rgba(83,155,224,0.28);
+      --pat-norm-text:#bfe0ff;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1b1a17;--panel:#242220;--ink:#ece7dc;--ink-soft:#a49d8c;--accent:#d3a66b;
+    --accent-dark:#e6c08a;--accent-soft:#3a3226;--line:#37342c;--good:#7fb894;--danger:#e0796a;
+    --shadow:0 1px 2px rgba(0,0,0,0.3),0 6px 24px rgba(0,0,0,0.35);
+    --pat-star-bg: rgba(240,171,45,0.38);--pat-star-text:#ffdc9a;
+    --pat-norm-bg: rgba(83,155,224,0.28);--pat-norm-text:#bfe0ff;
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f5f1;--panel:#ffffff;--ink:#26241f;--ink-soft:#6b6659;--accent:#a8763e;
+    --accent-dark:#7c5527;--accent-soft:#f0e4d3;--line:#e6e1d6;--good:#4b7c5c;--danger:#b1503f;
+    --shadow:0 1px 2px rgba(30,25,15,0.06),0 6px 20px rgba(30,25,15,0.05);
+    --pat-star-bg: rgba(240,171,45,0.5);--pat-star-text:#5c3d05;
+    --pat-norm-bg: rgba(83,155,224,0.3);--pat-norm-text:#173856;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.6;
+    padding-bottom:110px;
+  }
+  .wrap{max-width:min(1100px,95vw);margin:0 auto;padding:20px 16px 40px;}
+  header{margin-bottom:18px;}
+  header h1{font-size:1.35rem;margin:0 0 4px;letter-spacing:.01em;}
+  header p{margin:0;color:var(--ink-soft);font-size:.88rem;}
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:14px;
+  }
+
+  /* tabs */
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:14px;-webkit-overflow-scrolling:touch;}
+  .tab{
+    flex:0 0 auto;
+    padding:9px 14px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink-soft);
+    font-size:.83rem;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  :root[data-theme="dark"] .tab.active{color:#241d10;}
+  @media (prefers-color-scheme: dark){
+    .tab.active{color:#241d10;}
+  }
+  :root[data-theme="light"] .tab.active{color:#fff;}
+
+  /* progress overview (compact) */
+  #progressCard{padding:8px 14px;}
+  .progress-row{display:flex;align-items:center;gap:10px;}
+  .ring{position:relative;width:38px;height:38px;flex:0 0 auto;}
+  .ring svg{width:38px;height:38px;transform:rotate(-90deg);}
+  .ring circle{fill:none;stroke-width:5;}
+  .ring .bg{stroke:var(--line);}
+  .ring .fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .3s ease;}
+  .ring .pct{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:.55rem;font-weight:700;color:var(--accent-dark);
+  }
+  .progress-meta{flex:1;min-width:0;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;}
+  .progress-meta .count{font-size:1.05rem;font-weight:700;white-space:nowrap;}
+  .progress-meta .count small{font-size:.8rem;font-weight:500;color:var(--ink-soft);}
+  .progress-meta .sub{font-size:.72rem;color:var(--ink-soft);}
+  .progress-meta .bar-outer{flex-basis:100%;order:3;margin-top:0;}
+
+  .bar-outer{height:5px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:0;}
+  .bar-inner{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));border-radius:99px;transition:width .3s ease;}
+
+  .stat-grid{display:flex;gap:12px;margin-top:4px;font-size:.72rem;color:var(--ink-soft);flex-wrap:wrap;}
+  .stat{display:flex;align-items:baseline;gap:4px;}
+  .stat .v{font-size:.82rem;font-weight:700;color:var(--accent-dark);}
+  .stat .l{font-size:.68rem;color:var(--ink-soft);}
+
+  /* text reading area */
+  .text-card h2{font-size:1rem;margin:0 0 10px;color:var(--accent-dark);}
+  .fontctl{display:flex;gap:6px;align-items:center;margin-left:auto;}
+  .text-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .fontbtn{
+    width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--panel);
+    color:var(--ink);cursor:pointer;font-size:.9rem;line-height:1;
+  }
+  .para-row{margin-bottom:14px;}
+  .para-row:last-child{margin-bottom:0;}
+  .para-main{display:flex;gap:8px;align-items:flex-start;}
+  .para-row p{
+    margin:0;
+    flex:1;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:var(--fs,19px);
+    color:var(--ink);
+    transition:background .2s ease, padding .2s ease, filter .2s ease;
+    border-radius:6px;
+  }
+  .para-row.playing p{
+    background:var(--accent-soft);
+    padding:3px 8px;
+    margin:-3px -8px;
+  }
+  .para-row p.reciting{
+    filter:blur(7px);
+    user-select:none;
+  }
+  .mic-btn{
+    flex:0 0 auto;
+    width:28px;height:28px;margin-top:2px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--danger);
+    cursor:pointer;
+    font-size:.75rem;
+    line-height:1;
+  }
+  .mic-btn:hover{background:var(--accent-soft);}
+  .mic-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .mic-btn.recording{background:var(--danger);color:#fff;border-color:var(--danger);animation:pulse 1s infinite;}
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(177,80,63,0.5);}
+    50%{box-shadow:0 0 0 6px rgba(177,80,63,0);}
+  }
+  .mic-btn.hint{border-color:var(--accent);animation:hintpulse 1s ease-in-out 3;}
+  @keyframes hintpulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(240,171,45,0.65);}
+    50%{box-shadow:0 0 0 7px rgba(240,171,45,0);}
+  }
+  .recite-badge{
+    flex:0 0 auto;
+    font-size:.68rem;
+    color:var(--accent-dark);
+    background:var(--accent-soft);
+    border-radius:999px;
+    padding:2px 8px;
+    white-space:nowrap;
+    align-self:center;
+  }
+  .recite-result{
+    margin:6px 0 0 72px;
+    padding:8px 10px;
+    background:var(--accent-soft);
+    border-radius:8px;
+    font-size:.85rem;
+  }
+  .recite-status{color:var(--ink-soft);}
+  .recite-score{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+  .recite-diff{font-family:Georgia,"Times New Roman",serif;line-height:1.6;}
+  .word-ok{color:var(--good);font-weight:700;}
+  .word-miss{color:var(--danger);text-decoration:line-through;opacity:.75;}
+  .recite-said{margin-top:6px;font-size:.75rem;color:var(--ink-soft);font-style:italic;}
+  .recite-close{
+    display:block;
+    margin-top:8px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink-soft);
+    border-radius:7px;
+    padding:4px 10px;
+    font-size:.72rem;
+    cursor:pointer;
+  }
+  .recite-close:hover{background:var(--accent-soft);}
+  mark.pat{
+    background:none;
+    color:inherit;
+    border-radius:4px;
+    padding:0 2px;
+    box-decoration-break:clone;
+    -webkit-box-decoration-break:clone;
+  }
+  mark.pat-star{
+    background:var(--pat-star-bg);
+    color:var(--pat-star-text);
+    font-weight:700;
+  }
+  mark.pat-normal{
+    background:var(--pat-norm-bg);
+    color:var(--pat-norm-text);
+  }
+  .pat-legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:.74rem;color:var(--ink-soft);margin-bottom:10px;}
+  .pat-legend .swatch{display:inline-flex;align-items:center;gap:5px;}
+  .pat-legend .chip{display:inline-block;width:14px;height:14px;border-radius:4px;}
+  .pat-legend .chip.star{background:var(--pat-star-bg);}
+  .pat-legend .chip.normal{background:var(--pat-norm-bg);}
+  .pat-toggle{display:flex;align-items:center;gap:6px;font-size:.74rem;color:var(--ink-soft);margin-left:auto;}
+  .play-one{
+    flex:0 0 auto;
+    width:28px;height:28px;margin-top:2px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--accent-dark);
+    cursor:pointer;
+    font-size:.75rem;
+    line-height:1;
+  }
+  .play-one:hover{background:var(--accent-soft);}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:4px;}
+  .toolbar button{
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    border-radius:9px;padding:7px 11px;font-size:.8rem;cursor:pointer;font-weight:600;
+  }
+  .toolbar button.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .toolbar button:disabled{opacity:.5;cursor:not-allowed;}
+  .voice-select-compact{
+    padding:6px 8px;border-radius:8px;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);font-size:.78rem;max-width:200px;
+  }
+  .speed-compact{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--ink-soft);}
+  .speed-compact input[type=range]{width:90px;}
+  .more-settings{font-size:.78rem;color:var(--ink-soft);}
+  .more-settings summary{cursor:pointer;padding:6px 4px;user-select:none;}
+  .pause-row{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--ink-soft);margin:6px 0 4px;}
+  .pause-row input[type=range]{flex:1;max-width:140px;}
+  #speechStatus{margin:0 0 8px;min-height:1.1em;font-size:.74rem;}
+  .voice-hint{font-size:.7rem;color:var(--ink-soft);margin-top:2px;}
+
+  /* record button bar */
+  .recordbar{
+    position:fixed;left:0;right:0;bottom:0;
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    display:flex;gap:10px;justify-content:center;align-items:center;
+    box-shadow:0 -4px 16px rgba(0,0,0,0.06);
+  }
+  .recordbar .main-btn{
+    flex:1;max-width:420px;
+    background:var(--accent);color:#fff;border:none;border-radius:12px;
+    font-size:1.05rem;font-weight:700;padding:14px 10px;cursor:pointer;
+    box-shadow:0 3px 10px rgba(168,118,62,0.35);
+    transition:transform .08s ease;
+  }
+  .recordbar .main-btn:active{transform:scale(0.97);}
+  .recordbar .undo-btn{
+    border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);
+    border-radius:12px;padding:14px 14px;font-size:.85rem;cursor:pointer;
+  }
+
+  /* history */
+  .hist-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;}
+  .hist-row{display:flex;justify-content:space-between;font-size:.85rem;padding:6px 2px;border-bottom:1px dashed var(--line);}
+  .hist-row:last-child{border-bottom:none;}
+  .hist-row .d{color:var(--ink-soft);}
+  .hist-row .n{font-weight:700;}
+  .chart{display:flex;align-items:flex-end;gap:3px;height:70px;margin-top:8px;}
+  .chart .bar{flex:1;background:var(--accent-soft);border-radius:3px 3px 0 0;position:relative;min-height:2px;}
+  .chart .bar.hasval{background:var(--accent);}
+  .chart-labels{display:flex;gap:3px;font-size:.6rem;color:var(--ink-soft);margin-top:3px;}
+  .chart-labels span{flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  .footer-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+  .ghost-btn{
+    border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);
+    border-radius:8px;padding:8px 12px;font-size:.78rem;cursor:pointer;
+  }
+  .ghost-btn.danger{color:var(--danger);border-color:var(--danger);}
+
+  .toast{
+    position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-8px);
+    background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:99px;
+    font-size:.82rem;opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;
+    z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  input[type=number]{
+    width:70px;padding:6px 8px;border-radius:8px;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);font-size:.9rem;
+  }
+  .settings-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;font-size:.85rem;}
+  .settings-row:last-child{margin-bottom:0;}
+  .small{font-size:.72rem;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Career English 音読トレーナー</h1>
+    <p>各セクション・全文を <strong id="targetLabel">500</strong> 回音読して身体に染み込ませましょう。</p>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="card" id="progressCard">
+    <div class="progress-row">
+      <div class="ring">
+        <svg viewBox="0 0 38 38">
+          <circle class="bg" cx="19" cy="19" r="15.5"></circle>
+          <circle class="fg" id="ringFg" cx="19" cy="19" r="15.5"></circle>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <div class="progress-meta">
+        <div class="count"><span id="curCount">0</span> <small>/ <span id="curTarget">500</span> 回</small></div>
+        <div class="stat-grid">
+          <span class="stat"><span class="v" id="todayCount">0</span><span class="l">今日</span></span>
+          <span class="stat"><span class="v" id="streakCount">0</span><span class="l">連続日</span></span>
+          <span class="stat"><span class="v" id="remainCount">500</span><span class="l">残り</span></span>
+        </div>
+        <div class="bar-outer"><div class="bar-inner" id="barInner" style="width:0%"></div></div>
+        <div class="sub" id="subLabel" style="flex-basis:100%;order:4;">まだ記録がありません。読み終えたら下のボタンをタップ！</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card text-card">
+    <div class="text-head">
+      <h2 id="passageTitle">全文</h2>
+      <div class="fontctl">
+        <button class="fontbtn" id="fontMinus">A-</button>
+        <button class="fontbtn" id="fontPlus">A+</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="primary" id="playAllBtn">▶ 全文再生</button>
+      <button id="shadowBtn">🔁 シャドーイング</button>
+      <button id="stopSpeechBtn">■ 停止</button>
+      <select id="voiceSelect" class="voice-select-compact"></select>
+      <span class="speed-compact"><input type="range" id="rateSlider" min="0.6" max="1.3" step="0.05" value="0.95"><span id="rateLabel">0.95x</span></span>
+      <details class="more-settings">
+        <summary>詳細</summary>
+        <div class="pause-row" id="pauseRow">
+          <span>文の間（シャドーイング用）</span>
+          <input type="range" id="pauseSlider" min="0" max="5" step="0.5" value="1.5">
+          <span id="pauseLabel">1.5秒</span>
+        </div>
+        <div class="voice-hint">各段落の ▶ ボタンでその一文だけ再生できます。Microsoft Edgeでは「Natural」と付いた音声を選ぶとより自然な発音になります（要インターネット接続）。</div>
+      </details>
+    </div>
+    <div class="small" id="speechStatus"></div>
+
+    <div class="pat-legend">
+      <span class="swatch"><span class="chip star"></span>最重要の型（★5）</span>
+      <span class="swatch"><span class="chip normal"></span>意識したい型</span>
+      <label class="pat-toggle"><input type="checkbox" id="patToggle" checked> 色分け表示</label>
+    </div>
+    <div class="passage" id="passage"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1rem;margin:0 0 10px;color:var(--accent-dark);">推移</h2>
+    <div class="chart" id="chart"></div>
+    <div class="chart-labels" id="chartLabels"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1rem;margin:0 0 10px;color:var(--accent-dark);">履歴（直近）</h2>
+    <div class="hist-list" id="histList"><div class="small">まだ記録がありません</div></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1rem;margin:0 0 10px;color:var(--accent-dark);">設定</h2>
+    <div class="settings-row">
+      <span>目標回数（全セクション共通）</span>
+      <input type="number" id="targetInput" min="1" step="1">
+    </div>
+    <div class="settings-row">
+      <span class="small">記録はこの端末のブラウザに自動保存されます。機種変更・キャッシュ削除の前にバックアップをおすすめします。</span>
+    </div>
+    <div class="footer-actions">
+      <button class="ghost-btn" id="exportBtn">JSONバックアップを書き出す</button>
+      <button class="ghost-btn" id="importBtn">JSONを読み込む</button>
+      <button class="ghost-btn danger" id="resetBtn">この項目の記録をリセット</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+  </div>
+</div>
+
+<div class="recordbar">
+  <button class="undo-btn" id="undoBtn" title="直前の記録を取り消す">↩ 取り消す</button>
+  <button class="main-btn" id="recordBtn">読んだ！ +1</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script id="text-data" type="application/json">
+[
+  {
+    "id": "s1",
+    "title": "Section 1 — From Sales to Data",
+    "paragraphs": [
+      "I've worked in sales for more than 18 years, and most of my career has been focused on working directly with customers and partners. Over time, however, I became increasingly interested in something beyond selling: how we could use data and technology to make sales activities more effective.",
+      "At first, my motivation was very simple. I wanted to make my own work easier and more efficient. Whenever I had to spend too much time looking for information or doing repetitive work manually, I found myself thinking, \"There must be a better way to do this.\"",
+      "That's why I started learning tools like Power BI, Power Query, and Power Automate. I began bringing together information from different sources and building reports that gave me the information I needed.",
+      "But as I continued doing this, something interesting happened. The tools I had originally built for myself started being used by other salespeople as well.",
+      "That's when I realized that one of my strengths was not just selling. I was also good at identifying problems, organizing information, and turning ideas into practical solutions.",
+      "More importantly, I realized how powerful the combination of sales experience, data, and technology could be. Because I've worked on the sales side for many years, I understand what information salespeople actually need and what makes their daily work difficult."
+    ]
+  },
+  {
+    "id": "s2",
+    "title": "Section 2 — How I Solve Problems",
+    "paragraphs": [
+      "One of the things I've learned over the years is that having data isn't enough. The information has to be easy to access, easy to understand, and useful for making decisions.",
+      "For example, I often found that important information about orders, inventory, and lead times was spread across different systems and files. Salespeople had to spend time looking for the information they needed, and sometimes the information wasn't up to date.",
+      "Rather than simply accepting the situation, I started thinking about how I could improve it. I brought data from different sources together, automated parts of the reporting process, and built Power BI reports that could be used by the wider sales organization.",
+      "As a result, salespeople were able to access updated information more easily and spend less time doing manual work.",
+      "What I found was that even a relatively small improvement could have a much bigger impact when it was shared across the organization.",
+      "At the same time, I've learned that the most sophisticated solution isn't always the best solution. What really matters is whether people actually use it.",
+      "That's why I usually prefer to start with something practical, see how people use it, and improve it over time.",
+      "Rather than waiting for someone else to solve a problem, I tend to ask myself what I can do about it first. I think that mindset has become an important part of how I work."
+    ]
+  },
+  {
+    "id": "s3",
+    "title": "Section 3 — From Data to Action",
+    "paragraphs": [
+      "As I became more involved in data and reporting, my thinking started to change. I realized that building a good dashboard wasn't the end goal.",
+      "A dashboard isn't the goal. It's the starting point for better decision-making.",
+      "In other words, it's not just about showing people what happened. What really matters is what we do with the information.",
+      "This is especially important when it comes to inventory. We can visualize inventory levels, lead times, open orders, and sales trends. But once that foundation is in place, the next question should be: What action should we take?",
+      "For example, if we can identify unusual changes in inventory or demand early enough, we may be able to take action before they become bigger problems.",
+      "From a sales perspective, inventory isn't just a supply chain issue. It can directly affect customer conversations, opportunities, and ultimately revenue.",
+      "That's why I believe sales, distributors, and supply chain teams need to look at the information together.",
+      "Rather than simply providing reports, I'd like to help turn data into insights and insights into action.",
+      "That's where I think I can add value. I understand the sales side, but I'm also interested in the operational side and in how data can connect the two.",
+      "Ultimately, what interests me most is not the dashboard itself. It's using information to help people make better decisions and drive better business outcomes."
+    ]
+  },
+  {
+    "id": "s4",
+    "title": "Section 4 — What I Want to Do Next",
+    "paragraphs": [
+      "Looking back on my career, I've realized that the part of my work I enjoy most is finding ways to make things work better.",
+      "I still value my sales experience very highly. In fact, I think it's one of the reasons I can approach operational problems differently. I've experienced the challenges salespeople face firsthand, so I don't want to improve a process just for the sake of efficiency.",
+      "What I'm really interested in is creating an environment where salespeople can spend more time with customers, make better decisions, and ultimately generate more revenue.",
+      "That's why I'm interested in moving into a role that allows me to combine sales, data, technology, and operations.",
+      "There are still things I need to learn, of course. I don't have all the answers, and I haven't worked in a formal Sales Operations role before. At the same time, I already have many of the skills and perspectives that I think are important for this kind of work.",
+      "I see the DOM role as an opportunity to build on what I've already been doing while developing a deeper understanding of distribution operations and inventory management.",
+      "Going forward, I'd like to broaden my experience further into Sales Operations and Revenue Operations.",
+      "Rather than focusing only on my own sales results, I want to help build systems and processes that enable the whole organization to perform better.",
+      "That's the direction I want to take in the next stage of my career."
+    ]
+  }
+]
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var STORAGE_KEY = "careerReadingApp.v1";
+  var sectionsData = JSON.parse(document.getElementById("text-data").textContent);
+
+  // build the "full text" pseudo-section, with stable per-paragraph IDs
+  // (stable regardless of whether viewed via the "full" tab or a single-section tab)
+  sectionsData.forEach(function(s){
+    s.paraIds = s.paragraphs.map(function(_, i){ return s.id + "-" + i; });
+  });
+  var fullParagraphs = [], fullParaIds = [];
+  sectionsData.forEach(function(s){
+    fullParagraphs = fullParagraphs.concat(s.paragraphs);
+    fullParaIds = fullParaIds.concat(s.paraIds);
+  });
+  var ALL_SEGMENTS = [{id:"full", title:"全文 (Whole text)", paragraphs: fullParagraphs, paraIds: fullParaIds}].concat(sectionsData);
+
+  // ---------- pattern (kata) highlighting ----------
+  var PATTERNS = [
+    {phrase:"Over time, however,", star:false},
+    {phrase:"At first,", star:false},
+    {phrase:"That's why", star:false},
+    {phrase:"But as I continued doing this,", star:false},
+    {phrase:"That's when I realized that", star:true},
+    {phrase:"More importantly,", star:false},
+    {phrase:"Because I've worked on the sales side for many years,", star:false},
+    {phrase:"One of the things I've learned over the years is that", star:true},
+    {phrase:"Rather than simply accepting the situation,", star:true},
+    {phrase:"As a result,", star:false},
+    {phrase:"What I found was that", star:false},
+    {phrase:"At the same time,", star:false},
+    {phrase:"What really matters is", star:true},
+    {phrase:"I tend to", star:false},
+    {phrase:"As I became more involved in", star:false},
+    {phrase:"In other words,", star:false},
+    {phrase:"it's not just about", star:true},
+    {phrase:"once that foundation is in place,", star:true},
+    {phrase:"From a sales perspective,", star:true},
+    {phrase:"That's where I think I can add value.", star:true},
+    {phrase:"Ultimately,", star:false},
+    {phrase:"Looking back on my career, I've realized that", star:true},
+    {phrase:"In fact,", star:false},
+    {phrase:"What I'm really interested in is", star:true},
+    {phrase:"There are still things I need to learn.", star:true},
+    {phrase:"I see the DOM role as an opportunity to", star:true},
+    {phrase:"Going forward,", star:true},
+    {phrase:"Rather than focusing only on my own sales results, I want to", star:false}
+  ];
+
+  function escapeHtml(s){
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+  }
+  function escapeRegex(s){
+    return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  }
+
+  function findPatternMatches(text){
+    var matches = [];
+    PATTERNS.forEach(function(p){
+      var re = new RegExp(escapeRegex(p.phrase), "gi");
+      var m;
+      while((m = re.exec(text))){
+        matches.push({start:m.index, end:m.index+m[0].length, star:p.star});
+      }
+    });
+    matches.sort(function(a,b){
+      if(a.start !== b.start) return a.start-b.start;
+      return (b.end-b.start)-(a.end-a.start);
+    });
+    var accepted = [];
+    var lastEnd = -1;
+    matches.forEach(function(m){
+      if(m.start >= lastEnd){
+        accepted.push(m);
+        lastEnd = m.end;
+      }
+    });
+    return accepted;
+  }
+
+  function paragraphToHTML(text, highlightOn){
+    if(!highlightOn) return escapeHtml(text);
+    var matches = findPatternMatches(text);
+    if(matches.length===0) return escapeHtml(text);
+    var html = "";
+    var cursor = 0;
+    matches.forEach(function(m){
+      html += escapeHtml(text.slice(cursor, m.start));
+      var cls = m.star ? "pat pat-star" : "pat pat-normal";
+      html += '<mark class="'+cls+'">' + escapeHtml(text.slice(m.start, m.end)) + "</mark>";
+      cursor = m.end;
+    });
+    html += escapeHtml(text.slice(cursor));
+    return html;
+  }
+
+  var defaultState = {
+    target: 500,
+    fontSize: 19,
+    activeTab: "full",
+    voiceName: "",
+    rate: 0.95,
+    pauseSec: 1.5,
+    showPatterns: true,
+    segments: {}, // id -> { reps: [isoTimestamps...] }
+    recite: {} // paraId -> { best, last, attempts, lastAt }
+  };
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return JSON.parse(JSON.stringify(defaultState));
+      var parsed = JSON.parse(raw);
+      // merge defaults for forward-compat
+      var merged = Object.assign({}, defaultState, parsed);
+      merged.segments = parsed.segments || {};
+      merged.recite = parsed.recite || {};
+      return merged;
+    }catch(e){
+      console.error("load failed", e);
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+  }
+
+  function saveState(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  var state = loadState();
+
+  function ensureSegment(id){
+    if(!state.segments[id]) state.segments[id] = { reps: [] };
+    return state.segments[id];
+  }
+
+  function todayStr(d){
+    d = d || new Date();
+    var y = d.getFullYear(), m = ("0"+(d.getMonth()+1)).slice(-2), day=("0"+d.getDate()).slice(-2);
+    return y+"-"+m+"-"+day;
+  }
+
+  function dailyCounts(reps){
+    var map = {};
+    reps.forEach(function(ts){
+      var d = todayStr(new Date(ts));
+      map[d] = (map[d]||0)+1;
+    });
+    return map;
+  }
+
+  function computeStreak(reps){
+    if(reps.length===0) return 0;
+    var map = dailyCounts(reps);
+    var streak = 0;
+    var cur = new Date();
+    // if nothing today, allow streak to still count from yesterday backward,
+    // but streak "counting" starts only if today or yesterday has activity
+    var cursorStr = todayStr(cur);
+    if(!map[cursorStr]){
+      // check yesterday; if no activity yesterday either, streak is 0
+      var y = new Date(cur); y.setDate(y.getDate()-1);
+      if(!map[todayStr(y)]) return 0;
+      cur = y;
+    }
+    while(true){
+      var ds = todayStr(cur);
+      if(map[ds]){
+        streak++;
+        cur.setDate(cur.getDate()-1);
+      } else break;
+    }
+    return streak;
+  }
+
+  // ---------- UI: tabs ----------
+  var tabsEl = document.getElementById("tabs");
+  ALL_SEGMENTS.forEach(function(seg){
+    var btn = document.createElement("button");
+    btn.className = "tab";
+    btn.textContent = seg.id === "full" ? "全文" : seg.title.replace(/^Section \d+\s*—\s*/, "S"+seg.id.replace("s","")+". ");
+    btn.dataset.id = seg.id;
+    btn.addEventListener("click", function(){
+      stopPlayback();
+      state.activeTab = seg.id;
+      saveState();
+      render();
+    });
+    tabsEl.appendChild(btn);
+  });
+
+  // ---------- font size ----------
+  document.getElementById("fontPlus").addEventListener("click", function(){
+    stopPlayback();
+    state.fontSize = Math.min(30, (state.fontSize||19)+1);
+    saveState(); render();
+  });
+  document.getElementById("fontMinus").addEventListener("click", function(){
+    stopPlayback();
+    state.fontSize = Math.max(14, (state.fontSize||19)-1);
+    saveState(); render();
+  });
+
+  var patToggle = document.getElementById("patToggle");
+  patToggle.checked = state.showPatterns !== false;
+  patToggle.addEventListener("change", function(){
+    state.showPatterns = patToggle.checked;
+    saveState(); render();
+  });
+
+  // ---------- speech synthesis (model audio / shadowing) ----------
+  var synth = window.speechSynthesis || null;
+  var voiceSelect = document.getElementById("voiceSelect");
+  var rateSlider = document.getElementById("rateSlider");
+  var rateLabel = document.getElementById("rateLabel");
+  var pauseSlider = document.getElementById("pauseSlider");
+  var pauseLabel = document.getElementById("pauseLabel");
+  var speechStatus = document.getElementById("speechStatus");
+  var playAllBtn = document.getElementById("playAllBtn");
+  var shadowBtn = document.getElementById("shadowBtn");
+  var stopSpeechBtn = document.getElementById("stopSpeechBtn");
+
+  var availableVoices = [];
+  var isPlaying = false;
+  var isShadowMode = false;
+  var playToken = 0; // increments to invalidate stale async chains
+
+  function currentSegment(){
+    return ALL_SEGMENTS.find(function(s){return s.id===state.activeTab;}) || ALL_SEGMENTS[0];
+  }
+
+  function populateVoiceSelect(){
+    if(!synth) return;
+    var all = synth.getVoices();
+    availableVoices = all.filter(function(v){ return /^en/i.test(v.lang); });
+    if(availableVoices.length===0) availableVoices = all;
+    voiceSelect.innerHTML = "";
+    if(availableVoices.length===0){
+      var opt = document.createElement("option");
+      opt.textContent = "音声を読み込み中…";
+      voiceSelect.appendChild(opt);
+      return;
+    }
+    availableVoices.forEach(function(v){
+      var opt = document.createElement("option");
+      opt.value = v.name;
+      opt.textContent = v.name + " (" + v.lang + ")" + (v.localService ? "" : " ☁");
+      voiceSelect.appendChild(opt);
+    });
+    // restore saved choice, else prefer a "Natural"/"Online" English voice, else first en-US
+    var preferred = null;
+    if(state.voiceName){
+      preferred = availableVoices.find(function(v){ return v.name===state.voiceName; });
+    }
+    if(!preferred){
+      preferred = availableVoices.find(function(v){ return /natural|online/i.test(v.name) && /^en/i.test(v.lang); })
+        || availableVoices.find(function(v){ return v.lang==="en-US"; })
+        || availableVoices[0];
+    }
+    if(preferred){
+      voiceSelect.value = preferred.name;
+      state.voiceName = preferred.name;
+      saveState();
+    }
+  }
+
+  function getSelectedVoice(){
+    return availableVoices.find(function(v){ return v.name===voiceSelect.value; });
+  }
+
+  if(synth){
+    populateVoiceSelect();
+    synth.onvoiceschanged = populateVoiceSelect;
+  } else {
+    speechStatus.textContent = "このブラウザは音声合成(Web Speech API)に対応していません。";
+    playAllBtn.disabled = true; shadowBtn.disabled = true; stopSpeechBtn.disabled = true;
+  }
+
+  voiceSelect.addEventListener("change", function(){
+    state.voiceName = voiceSelect.value;
+    saveState();
+  });
+
+  rateSlider.value = state.rate || 0.95;
+  rateLabel.textContent = parseFloat(rateSlider.value).toFixed(2) + "x";
+  rateSlider.addEventListener("input", function(){
+    state.rate = parseFloat(rateSlider.value);
+    rateLabel.textContent = state.rate.toFixed(2) + "x";
+    saveState();
+  });
+
+  pauseSlider.value = state.pauseSec != null ? state.pauseSec : 1.5;
+  pauseLabel.textContent = parseFloat(pauseSlider.value).toFixed(1) + "秒";
+  pauseSlider.addEventListener("input", function(){
+    state.pauseSec = parseFloat(pauseSlider.value);
+    pauseLabel.textContent = state.pauseSec.toFixed(1) + "秒";
+    saveState();
+  });
+
+  function clearActiveParaHighlight(){
+    var rows = document.querySelectorAll(".para-row.playing");
+    rows.forEach(function(r){ r.classList.remove("playing"); });
+  }
+
+  function highlightPara(idx){
+    clearActiveParaHighlight();
+    var rows = document.querySelectorAll("#passage .para-row");
+    var row = rows[idx];
+    if(row){
+      row.classList.add("playing");
+      row.scrollIntoView({behavior:"smooth", block:"center"});
+    }
+  }
+
+  function stopPlayback(){
+    if(synth) synth.cancel();
+    isPlaying = false;
+    isShadowMode = false;
+    playToken++;
+    clearActiveParaHighlight();
+    speechStatus.textContent = "";
+  }
+
+  function speakOne(text, onDone){
+    var utter = new SpeechSynthesisUtterance(text);
+    var voice = getSelectedVoice();
+    if(voice){ utter.voice = voice; utter.lang = voice.lang; } else { utter.lang = "en-US"; }
+    utter.rate = state.rate || 0.95;
+    utter.onend = onDone;
+    utter.onerror = onDone;
+    synth.speak(utter);
+  }
+
+  function playSequence(shadow){
+    if(!synth) return;
+    stopPlayback();
+    var myToken = ++playToken;
+    isPlaying = true;
+    isShadowMode = !!shadow;
+    var seg = currentSegment();
+    var paras = seg.paragraphs;
+    var idx = 0;
+    speechStatus.textContent = shadow ? "🔁 シャドーイング再生中…（ポーズの間に声に出して繰り返しましょう）" : "▶ 再生中…";
+
+    function step(){
+      if(myToken !== playToken) return; // cancelled/superseded
+      if(idx >= paras.length){
+        isPlaying = false;
+        clearActiveParaHighlight();
+        speechStatus.textContent = "再生が終わりました";
+        return;
+      }
+      var i = idx++;
+      highlightPara(i);
+      speakOne(paras[i], function(){
+        if(myToken !== playToken) return;
+        if(shadow){
+          var ms = (state.pauseSec != null ? state.pauseSec : 1.5) * 1000;
+          setTimeout(function(){ if(myToken===playToken) step(); }, ms);
+        } else {
+          step();
+        }
+      });
+    }
+    step();
+  }
+
+  function playSingle(idx){
+    if(!synth) return;
+    stopPlayback();
+    var myToken = ++playToken;
+    isPlaying = true;
+    var seg = currentSegment();
+    speechStatus.textContent = "▶ 再生中…";
+    highlightPara(idx);
+    speakOne(seg.paragraphs[idx], function(){
+      if(myToken !== playToken) return;
+      isPlaying = false;
+      clearActiveParaHighlight();
+      speechStatus.textContent = "";
+    });
+  }
+
+  playAllBtn.addEventListener("click", function(){ playSequence(false); });
+  shadowBtn.addEventListener("click", function(){ playSequence(true); });
+  stopSpeechBtn.addEventListener("click", stopPlayback);
+
+  // ---------- recitation test (mic -> speech-to-text -> word diff) ----------
+  var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  var recognizer = null;
+  var recognizing = false;
+
+  function micSupported(){ return !!SpeechRecognitionCtor; }
+
+  function normalizeToken(tok){
+    return tok.toLowerCase().replace(/[^a-z0-9']/g, "");
+  }
+  function normalizeWords(text){
+    return text.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+  }
+  function tokenizeOriginal(text){
+    return text.split(/\s+/).filter(Boolean);
+  }
+  // LCS-based alignment: returns which target words were successfully recalled, in order
+  function diffWords(targetWords, saidWords){
+    var n = targetWords.length, m = saidWords.length;
+    var dp = [];
+    for(var i=0;i<=n;i++){ dp.push(new Array(m+1).fill(0)); }
+    for(i=1;i<=n;i++){
+      for(var j=1;j<=m;j++){
+        if(targetWords[i-1]===saidWords[j-1]) dp[i][j] = dp[i-1][j-1]+1;
+        else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+      }
+    }
+    var matchedTarget = new Array(n).fill(false);
+    i=n; var j=m;
+    while(i>0 && j>0){
+      if(targetWords[i-1]===saidWords[j-1]){ matchedTarget[i-1]=true; i--; j--; }
+      else if(dp[i-1][j] >= dp[i][j-1]) i--;
+      else j--;
+    }
+    return {matchedTarget:matchedTarget, matchedCount:dp[n][m]};
+  }
+  function buildRecitationDiff(targetText, saidText){
+    var origTokens = tokenizeOriginal(targetText);
+    var targetNorm = origTokens.map(normalizeToken);
+    var validIdx = [];
+    targetNorm.forEach(function(t,k){ if(t) validIdx.push(k); });
+    var validTarget = validIdx.map(function(k){ return targetNorm[k]; });
+    var saidNorm = normalizeWords(saidText || "");
+    var diff = diffWords(validTarget, saidNorm);
+    var matchedFull = new Array(origTokens.length).fill(false);
+    validIdx.forEach(function(k, vi){ matchedFull[k] = diff.matchedTarget[vi]; });
+    var score = validTarget.length ? Math.round(diff.matchedCount/validTarget.length*100) : 100;
+    return {origTokens:origTokens, matchedFull:matchedFull, score:score};
+  }
+
+  function ensureRecite(pid){
+    if(!state.recite[pid]) state.recite[pid] = {best:0, last:0, attempts:0, lastAt:null};
+    return state.recite[pid];
+  }
+
+  function renderReciteBadge(pid){
+    var rec = state.recite[pid];
+    if(!rec || rec.attempts===0) return "";
+    return '<span class="recite-badge" title="ベストスコア">🏆 ' + rec.best + '%</span>';
+  }
+
+  function addCloseButton(resultEl){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "recite-close";
+    btn.textContent = "✕ 閉じる";
+    btn.addEventListener("click", function(){ resultEl.style.display = "none"; });
+    resultEl.appendChild(btn);
+  }
+
+  function startRecitationTest(pid, targetText, micBtn, playBtn, textEl, resultEl){
+    if(!micSupported()){
+      showToast("このブラウザは音声認識に対応していません（Edge/Chrome推奨）");
+      return;
+    }
+    if(recognizing){ stopRecitationTest(); return; }
+    stopPlayback();
+    textEl.classList.add("reciting");
+    playBtn.disabled = true;
+    resultEl.style.display = "block";
+    resultEl.innerHTML = '<span class="recite-status">🎙 聞いています…テキストを見ずに言ってみましょう</span>';
+
+    var rec = new SpeechRecognitionCtor();
+    var voice = getSelectedVoice();
+    rec.lang = (voice && voice.lang) || "en-US";
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    rec.continuous = false;
+    recognizing = true;
+    micBtn.classList.add("recording");
+    micBtn.textContent = "●";
+
+    rec.onresult = function(e){
+      var said = e.results[0][0].transcript;
+      var d = buildRecitationDiff(targetText, said);
+      var html = '<div class="recite-score">スコア: ' + d.score + '%（言えた単語の割合）</div><div class="recite-diff">';
+      d.origTokens.forEach(function(tok, k){
+        var norm = normalizeToken(tok);
+        if(!norm){ html += escapeHtml(tok) + ' '; return; }
+        var cls = d.matchedFull[k] ? "word-ok" : "word-miss";
+        html += '<span class="'+cls+'">' + escapeHtml(tok) + '</span> ';
+      });
+      html += '</div><div class="recite-said">聞き取った内容: "' + escapeHtml(said) + '"</div>';
+      resultEl.innerHTML = html;
+      addCloseButton(resultEl);
+      var recData = ensureRecite(pid);
+      recData.attempts++;
+      recData.last = d.score;
+      recData.best = Math.max(recData.best, d.score);
+      recData.lastAt = new Date().toISOString();
+      saveState();
+    };
+    rec.onerror = function(e){
+      resultEl.innerHTML = '<span class="recite-status">認識できませんでした（' + escapeHtml(e.error||"error") + '）。マイクの許可を確認してもう一度お試しください。</span>';
+      addCloseButton(resultEl);
+    };
+    rec.onend = function(){
+      recognizing = false;
+      recognizer = null;
+      micBtn.classList.remove("recording");
+      micBtn.textContent = "🎤";
+      textEl.classList.remove("reciting");
+      playBtn.disabled = false;
+    };
+    recognizer = rec;
+    try{ rec.start(); }catch(err){
+      resultEl.innerHTML = '<span class="recite-status">音声認識を開始できませんでした。</span>';
+      recognizing = false;
+      micBtn.classList.remove("recording");
+      micBtn.textContent = "🎤";
+      textEl.classList.remove("reciting");
+      playBtn.disabled = false;
+    }
+  }
+
+  function stopRecitationTest(){
+    if(recognizer) recognizer.stop();
+  }
+
+  // ---------- record / undo ----------
+  function showToast(msg, duration){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(function(){ t.classList.remove("show"); }, duration || 1400);
+  }
+
+  function hintMicButtons(){
+    var btns = document.querySelectorAll(".mic-btn:not(:disabled)");
+    btns.forEach(function(b){
+      b.classList.add("hint");
+      setTimeout(function(){ b.classList.remove("hint"); }, 3000);
+    });
+  }
+
+  document.getElementById("recordBtn").addEventListener("click", function(){
+    var seg = ensureSegment(state.activeTab);
+    seg.reps.push(new Date().toISOString());
+    saveState();
+    render();
+    var total = seg.reps.length;
+    if(total === state.target){
+      showToast("🎉 目標 " + state.target + " 回達成！おめでとうございます！", 3000);
+    } else if(total % 10 === 0){
+      showToast("🎤 " + total + " 回達成！定着チェックに暗唱テストをやってみましょう", 3000);
+      hintMicButtons();
+    } else {
+      showToast("記録しました（" + total + " 回目）");
+    }
+  });
+
+  document.getElementById("undoBtn").addEventListener("click", function(){
+    var seg = ensureSegment(state.activeTab);
+    if(seg.reps.length===0){ showToast("取り消せる記録がありません"); return; }
+    seg.reps.pop();
+    saveState();
+    render();
+    showToast("直前の記録を取り消しました");
+  });
+
+  // ---------- settings ----------
+  var targetInput = document.getElementById("targetInput");
+  targetInput.addEventListener("change", function(){
+    var v = parseInt(targetInput.value, 10);
+    if(!v || v < 1) v = 500;
+    state.target = v;
+    saveState();
+    render();
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    var segTitle = ALL_SEGMENTS.find(function(s){return s.id===state.activeTab;}).title;
+    if(confirm("「" + (state.activeTab==="full" ? "全文" : segTitle) + "」の記録をすべて削除します。よろしいですか？")){
+      state.segments[state.activeTab] = { reps: [] };
+      saveState();
+      render();
+      showToast("記録をリセットしました");
+    }
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", function(){
+    var blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "career-reading-backup-" + todayStr() + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", function(){
+    document.getElementById("importFile").click();
+  });
+  document.getElementById("importFile").addEventListener("change", function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var data = JSON.parse(reader.result);
+        if(!data.segments) throw new Error("invalid format");
+        if(confirm("現在の記録を、読み込んだバックアップで上書きします。よろしいですか？")){
+          state = Object.assign({}, defaultState, data);
+          state.segments = data.segments || {};
+          saveState();
+          render();
+          showToast("バックアップを読み込みました");
+        }
+      }catch(err){
+        alert("読み込みに失敗しました: ファイル形式を確認してください。");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  // ---------- render ----------
+  var RING_R = 15.5, RING_C = 2*Math.PI*RING_R;
+  document.getElementById("ringFg").style.strokeDasharray = RING_C.toFixed(2);
+
+  function render(){
+    var seg = ALL_SEGMENTS.find(function(s){return s.id===state.activeTab;}) || ALL_SEGMENTS[0];
+    var dataSeg = ensureSegment(seg.id);
+    var reps = dataSeg.reps;
+    var count = reps.length;
+    var target = state.target || 500;
+
+    // tabs active state
+    Array.prototype.forEach.call(tabsEl.children, function(btn){
+      btn.classList.toggle("active", btn.dataset.id === seg.id);
+    });
+
+    document.getElementById("targetLabel").textContent = target;
+    targetInput.value = target;
+    document.getElementById("passageTitle").textContent = seg.id==="full" ? "全文 (Whole text)" : seg.title;
+    patToggle.checked = state.showPatterns !== false;
+
+    // passage
+    var passageEl = document.getElementById("passage");
+    passageEl.style.setProperty("--fs", (state.fontSize||19)+"px");
+    passageEl.innerHTML = "";
+    seg.paragraphs.forEach(function(p, i){
+      var pid = seg.paraIds[i];
+      var row = document.createElement("div");
+      row.className = "para-row";
+
+      var main = document.createElement("div");
+      main.className = "para-main";
+
+      var btn = document.createElement("button");
+      btn.className = "play-one";
+      btn.type = "button";
+      btn.textContent = "▶";
+      btn.title = "この段落だけ再生";
+      btn.addEventListener("click", function(){ playSingle(i); });
+
+      var el = document.createElement("p");
+      el.innerHTML = paragraphToHTML(p, state.showPatterns);
+
+      var resultEl = document.createElement("div");
+      resultEl.className = "recite-result";
+      resultEl.style.display = "none";
+
+      var micBtn = document.createElement("button");
+      micBtn.className = "mic-btn";
+      micBtn.type = "button";
+      micBtn.textContent = "🎤";
+      micBtn.title = "暗唱テスト（本文を隠してマイクでチェック）";
+      if(!micSupported()){ micBtn.disabled = true; micBtn.title = "このブラウザは音声認識に対応していません"; }
+      micBtn.addEventListener("click", function(){
+        startRecitationTest(pid, p, micBtn, btn, el, resultEl);
+      });
+
+      var badge = document.createElement("span");
+      badge.innerHTML = renderReciteBadge(pid);
+
+      main.appendChild(btn);
+      main.appendChild(micBtn);
+      main.appendChild(el);
+      main.appendChild(badge);
+      row.appendChild(main);
+      row.appendChild(resultEl);
+      passageEl.appendChild(row);
+    });
+
+    // progress
+    var pct = Math.min(100, Math.round((count/target)*100));
+    document.getElementById("curCount").textContent = count;
+    document.getElementById("curTarget").textContent = target;
+    document.getElementById("ringPct").textContent = pct + "%";
+    document.getElementById("barInner").style.width = pct + "%";
+    var offset = RING_C * (1 - Math.min(1,count/target));
+    document.getElementById("ringFg").style.strokeDashoffset = offset.toFixed(2);
+    document.getElementById("remainCount").textContent = Math.max(0, target-count);
+
+    var todayC = dailyCounts(reps)[todayStr()] || 0;
+    document.getElementById("todayCount").textContent = todayC;
+    document.getElementById("streakCount").textContent = computeStreak(reps);
+
+    var subLabel = document.getElementById("subLabel");
+    if(count===0){
+      subLabel.textContent = "まだ記録がありません。読み終えたら下のボタンをタップ！";
+    } else if(count>=target){
+      subLabel.textContent = "🎉 目標達成済み！さらに積み重ねましょう。";
+    } else {
+      var map = dailyCounts(reps);
+      var days = Object.keys(map).length;
+      var avg = days ? (count/days) : 0;
+      var remain = target-count;
+      var etaDays = avg>0 ? Math.ceil(remain/avg) : null;
+      subLabel.textContent = etaDays
+        ? ("1日平均 " + avg.toFixed(1) + " 回のペースなら、あと約 " + etaDays + " 日で達成")
+        : "積み重ねていきましょう";
+    }
+
+    // history list (most recent days, up to 14)
+    var histList = document.getElementById("histList");
+    var map = dailyCounts(reps);
+    var days = Object.keys(map).sort().reverse();
+    if(days.length===0){
+      histList.innerHTML = '<div class="small">まだ記録がありません</div>';
+    } else {
+      histList.innerHTML = "";
+      days.slice(0,14).forEach(function(d){
+        var row = document.createElement("div");
+        row.className = "hist-row";
+        row.innerHTML = '<span class="d">'+d+'</span><span class="n">'+map[d]+' 回</span>';
+        histList.appendChild(row);
+      });
+    }
+
+    // chart: last 14 days including empty days, oldest->newest
+    var chartEl = document.getElementById("chart");
+    var labelsEl = document.getElementById("chartLabels");
+    chartEl.innerHTML = ""; labelsEl.innerHTML = "";
+    var arr = [];
+    for(var i=13;i>=0;i--){
+      var dd = new Date(); dd.setDate(dd.getDate()-i);
+      var ds = todayStr(dd);
+      arr.push({date:ds, n: map[ds]||0, label: (dd.getMonth()+1)+"/"+dd.getDate()});
+    }
+    var maxN = Math.max(1, Math.max.apply(null, arr.map(function(a){return a.n;})));
+    arr.forEach(function(a){
+      var bar = document.createElement("div");
+      bar.className = "bar" + (a.n>0 ? " hasval":"");
+      var h = a.n>0 ? Math.max(4, Math.round((a.n/maxN)*66)) : 2;
+      bar.style.height = h+"px";
+      bar.title = a.date + ": " + a.n + "回";
+      chartEl.appendChild(bar);
+      var lbl = document.createElement("span");
+      lbl.textContent = (a.date===todayStr()) ? "今日" : a.label;
+      labelsEl.appendChild(lbl);
+    });
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

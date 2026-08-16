@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Career English 瞬間英作文トレーナー</title>
+<style>
+  :root{
+    --bg:#f6f5f1;
+    --panel:#ffffff;
+    --ink:#26241f;
+    --ink-soft:#6b6659;
+    --accent:#a8763e;
+    --accent-dark:#7c5527;
+    --accent-soft:#f0e4d3;
+    --line:#e6e1d6;
+    --good:#4b7c5c;
+    --good-soft:#e1ede4;
+    --danger:#b1503f;
+    --danger-soft:#f3e1dd;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,0.06),0 6px 20px rgba(30,25,15,0.05);
+    --badge-phrase-bg: rgba(83,155,224,0.3);
+    --badge-phrase-text:#173856;
+    --badge-sentence-bg: rgba(240,171,45,0.5);
+    --badge-sentence-text:#5c3d05;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1b1a17;
+      --panel:#242220;
+      --ink:#ece7dc;
+      --ink-soft:#a49d8c;
+      --accent:#d3a66b;
+      --accent-dark:#e6c08a;
+      --accent-soft:#3a3226;
+      --line:#37342c;
+      --good:#7fb894;
+      --good-soft:#26332a;
+      --danger:#e0796a;
+      --danger-soft:#3a2925;
+      --shadow:0 1px 2px rgba(0,0,0,0.3),0 6px 24px rgba(0,0,0,0.35);
+      --badge-phrase-bg: rgba(83,155,224,0.28);
+      --badge-phrase-text:#bfe0ff;
+      --badge-sentence-bg: rgba(240,171,45,0.38);
+      --badge-sentence-text:#ffdc9a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1b1a17;--panel:#242220;--ink:#ece7dc;--ink-soft:#a49d8c;--accent:#d3a66b;
+    --accent-dark:#e6c08a;--accent-soft:#3a3226;--line:#37342c;--good:#7fb894;--good-soft:#26332a;
+    --danger:#e0796a;--danger-soft:#3a2925;
+    --shadow:0 1px 2px rgba(0,0,0,0.3),0 6px 24px rgba(0,0,0,0.35);
+    --badge-phrase-bg: rgba(83,155,224,0.28);--badge-phrase-text:#bfe0ff;
+    --badge-sentence-bg: rgba(240,171,45,0.38);--badge-sentence-text:#ffdc9a;
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f5f1;--panel:#ffffff;--ink:#26241f;--ink-soft:#6b6659;--accent:#a8763e;
+    --accent-dark:#7c5527;--accent-soft:#f0e4d3;--line:#e6e1d6;--good:#4b7c5c;--good-soft:#e1ede4;
+    --danger:#b1503f;--danger-soft:#f3e1dd;
+    --shadow:0 1px 2px rgba(30,25,15,0.06),0 6px 20px rgba(30,25,15,0.05);
+    --badge-phrase-bg: rgba(83,155,224,0.3);--badge-phrase-text:#173856;
+    --badge-sentence-bg: rgba(240,171,45,0.5);--badge-sentence-text:#5c3d05;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.6;
+    padding-bottom:20px;
+  }
+  .wrap{max-width:min(760px,95vw);margin:0 auto;padding:20px 16px 40px;}
+  header{margin-bottom:18px;}
+  header h1{font-size:1.3rem;margin:0 0 4px;letter-spacing:.01em;}
+  header p{margin:0;color:var(--ink-soft);font-size:.85rem;}
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:14px;
+  }
+
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:10px;-webkit-overflow-scrolling:touch;}
+  .tab{
+    flex:0 0 auto;padding:8px 13px;border-radius:999px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink-soft);font-size:.8rem;font-weight:600;cursor:pointer;
+    white-space:nowrap;transition:background .15s,color .15s,border-color .15s;
+  }
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  :root[data-theme="dark"] .tab.active{color:#241d10;}
+  @media (prefers-color-scheme: dark){ .tab.active{color:#241d10;} }
+  :root[data-theme="light"] .tab.active{color:#fff;}
+
+  .segrow{display:flex;gap:6px;margin-bottom:2px;}
+  .seg{
+    flex:1;padding:7px 8px;border-radius:9px;border:1px solid var(--line);background:var(--panel);
+    color:var(--ink-soft);font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;
+  }
+  .seg.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-dark);}
+
+  #progressCard{padding:8px 14px;}
+  .progress-row{display:flex;align-items:center;gap:10px;}
+  .ring{position:relative;width:38px;height:38px;flex:0 0 auto;}
+  .ring svg{width:38px;height:38px;transform:rotate(-90deg);}
+  .ring circle{fill:none;stroke-width:5;}
+  .ring .bg{stroke:var(--line);}
+  .ring .fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .3s ease;}
+  .ring .pct{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:.55rem;font-weight:700;color:var(--accent-dark);
+  }
+  .progress-meta{flex:1;min-width:0;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;}
+  .progress-meta .count{font-size:1.0rem;font-weight:700;white-space:nowrap;}
+  .progress-meta .count small{font-size:.78rem;font-weight:500;color:var(--ink-soft);}
+  .stat-grid{display:flex;gap:12px;margin-top:2px;font-size:.72rem;color:var(--ink-soft);flex-wrap:wrap;}
+  .stat{display:flex;align-items:baseline;gap:4px;}
+  .stat .v{font-size:.82rem;font-weight:700;color:var(--accent-dark);}
+  .stat .l{font-size:.68rem;color:var(--ink-soft);}
+
+  .card-badges{display:flex;gap:6px;align-items:center;margin-bottom:10px;}
+  .badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;}
+  .badge.phrase{background:var(--badge-phrase-bg);color:var(--badge-phrase-text);}
+  .badge.sentence{background:var(--badge-sentence-bg);color:var(--badge-sentence-text);}
+  .badge.boxlv{background:var(--line);color:var(--ink-soft);}
+
+  .quiz-card{min-height:190px;display:flex;flex-direction:column;}
+  .prompt-ja{
+    font-size:1.15rem;font-weight:600;line-height:1.75;flex:1;
+    display:flex;align-items:center;margin:6px 0 14px;
+  }
+  .reveal-area{margin-top:auto;}
+  .en-text{
+    font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;color:var(--accent-dark);
+    background:var(--accent-soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;line-height:1.6;
+  }
+  .reveal-btn{
+    width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;
+    font-size:1rem;font-weight:700;padding:13px;cursor:pointer;
+  }
+  .rate-row{display:flex;gap:10px;}
+  .rate-btn{
+    flex:1;border:none;border-radius:12px;font-size:1rem;font-weight:700;padding:13px;cursor:pointer;
+    transition:transform .08s ease;
+  }
+  .rate-btn:active{transform:scale(0.97);}
+  .rate-btn.ok{background:var(--good-soft);color:var(--good);border:1px solid var(--good);}
+  .rate-btn.ng{background:var(--danger-soft);color:var(--danger);border:1px solid var(--danger);}
+
+  .chart{display:flex;align-items:flex-end;gap:3px;height:70px;margin-top:8px;}
+  .chart .bar{flex:1;background:var(--accent-soft);border-radius:3px 3px 0 0;position:relative;min-height:2px;}
+  .chart .bar.hasval{background:var(--accent);}
+  .chart-labels{display:flex;gap:3px;font-size:.6rem;color:var(--ink-soft);margin-top:3px;}
+  .chart-labels span{flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  .footer-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+  .ghost-btn{
+    border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);
+    border-radius:8px;padding:8px 12px;font-size:.78rem;cursor:pointer;
+  }
+  .ghost-btn.danger{color:var(--danger);border-color:var(--danger);}
+  .small{font-size:.72rem;color:var(--ink-soft);}
+
+  .toast{
+    position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-8px);
+    background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:99px;
+    font-size:.82rem;opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;
+    z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Career English 瞬間英作文トレーナー</h1>
+    <p>音読アプリと同じキャリアの英文素材で、日本語を見て瞬時に英語を組み立てる練習をします。</p>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="segrow" id="typeSeg"></div>
+
+  <div class="card" id="progressCard">
+    <div class="progress-row">
+      <div class="ring">
+        <svg viewBox="0 0 38 38">
+          <circle class="bg" cx="19" cy="19" r="15.5"></circle>
+          <circle class="fg" id="ringFg" cx="19" cy="19" r="15.5"></circle>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <div class="progress-meta">
+        <div class="count"><span id="masteredCount">0</span> <small>/ <span id="poolCount">0</span> 習得</small></div>
+        <div class="stat-grid">
+          <span class="stat"><span class="v" id="todayCount">0</span><span class="l">今日</span></span>
+          <span class="stat"><span class="v" id="streakCount">0</span><span class="l">連続日</span></span>
+          <span class="stat"><span class="v" id="accRate">–</span><span class="l">正答率</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card quiz-card">
+    <div class="card-badges" id="cardBadges"></div>
+    <div class="prompt-ja" id="promptJa">読み込み中…</div>
+    <div class="reveal-area" id="revealArea"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1rem;margin:0 0 10px;color:var(--accent-dark);">推移（練習回数）</h2>
+    <div class="chart" id="chart"></div>
+    <div class="chart-labels" id="chartLabels"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1rem;margin:0 0 10px;color:var(--accent-dark);">設定</h2>
+    <div class="small" style="margin-bottom:10px;">記録はこの端末のブラウザに自動保存されます。機種変更・キャッシュ削除の前にバックアップをおすすめします。</div>
+    <div class="footer-actions">
+      <button class="ghost-btn" id="exportBtn">JSONバックアップを書き出す</button>
+      <button class="ghost-btn" id="importBtn">JSONを読み込む</button>
+      <button class="ghost-btn danger" id="resetBtn">表示中の範囲の記録をリセット</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script id="item-data" type="application/json">
+[
+  {"id":"s1-p1","type":"phrase","section":"s1","ja":"しかし時間が経つにつれて","en":"Over time, however,"},
+  {"id":"s1-p2","type":"phrase","section":"s1","ja":"最初は","en":"At first,"},
+  {"id":"s1-p3","type":"phrase","section":"s1","ja":"だからこそ／そういうわけで","en":"That's why"},
+  {"id":"s1-p4","type":"phrase","section":"s1","ja":"しかしこれを続けていくうちに","en":"But as I continued doing this,"},
+  {"id":"s1-p5","type":"phrase","section":"s1","ja":"その時、〜だと気づいた","en":"That's when I realized that"},
+  {"id":"s1-p6","type":"phrase","section":"s1","ja":"さらに重要なことに","en":"More importantly,"},
+  {"id":"s1-p7","type":"phrase","section":"s1","ja":"長年営業の現場で働いてきたからこそ","en":"Because I've worked on the sales side for many years,"},
+  {"id":"s1-s1","type":"sentence","section":"s1","ja":"私は18年以上営業の仕事をしてきて、そのキャリアの大部分は顧客やパートナーと直接関わる仕事に注力してきました。","en":"I've worked in sales for more than 18 years, and most of my career has been focused on working directly with customers and partners."},
+  {"id":"s1-s2","type":"sentence","section":"s1","ja":"しかし時間が経つにつれて、営業そのものを超えたある物事、つまりデータとテクノロジーを使って営業活動をより効果的にする方法に、次第に興味を持つようになりました。","en":"Over time, however, I became increasingly interested in something beyond selling: how we could use data and technology to make sales activities more effective."},
+  {"id":"s1-s3","type":"sentence","section":"s1","ja":"最初、私の動機はとてもシンプルでした。","en":"At first, my motivation was very simple."},
+  {"id":"s1-s4","type":"sentence","section":"s1","ja":"自分の仕事をもっと楽に、もっと効率的にしたかったのです。","en":"I wanted to make my own work easier and more efficient."},
+  {"id":"s1-s5","type":"sentence","section":"s1","ja":"情報を探すことや手作業の繰り返し作業に時間をかけすぎるたびに、「もっと良いやり方があるはずだ」と考えている自分に気づきました。","en":"Whenever I had to spend too much time looking for information or doing repetitive work manually, I found myself thinking, \"There must be a better way to do this.\""},
+  {"id":"s1-s6","type":"sentence","section":"s1","ja":"だからこそ、Power BIやPower Query、Power Automateといったツールを学び始めました。","en":"That's why I started learning tools like Power BI, Power Query, and Power Automate."},
+  {"id":"s1-s7","type":"sentence","section":"s1","ja":"さまざまな情報源からデータをまとめ、自分に必要な情報が得られるレポートを作り始めました。","en":"I began bringing together information from different sources and building reports that gave me the information I needed."},
+  {"id":"s1-s8","type":"sentence","section":"s1","ja":"しかしこれを続けていくうちに、面白いことが起こりました。","en":"But as I continued doing this, something interesting happened."},
+  {"id":"s1-s9","type":"sentence","section":"s1","ja":"もともと自分のために作ったツールが、他の営業担当者にも使われるようになったのです。","en":"The tools I had originally built for myself started being used by other salespeople as well."},
+  {"id":"s1-s10","type":"sentence","section":"s1","ja":"その時、自分の強みは単に「売ること」だけではないと気づきました。","en":"That's when I realized that one of my strengths was not just selling."},
+  {"id":"s1-s11","type":"sentence","section":"s1","ja":"問題を見つけ出し、情報を整理し、アイデアを実用的な解決策に変えることも得意だったのです。","en":"I was also good at identifying problems, organizing information, and turning ideas into practical solutions."},
+  {"id":"s1-s12","type":"sentence","section":"s1","ja":"さらに重要なことに、営業経験とデータとテクノロジーの組み合わせがどれほど強力かに気づきました。","en":"More importantly, I realized how powerful the combination of sales experience, data, and technology could be."},
+  {"id":"s1-s13","type":"sentence","section":"s1","ja":"長年営業の現場で働いてきたからこそ、営業担当者が実際にどんな情報を必要としているか、何が日々の仕事を難しくしているかが分かるのです。","en":"Because I've worked on the sales side for many years, I understand what information salespeople actually need and what makes their daily work difficult."},
+
+  {"id":"s2-p1","type":"phrase","section":"s2","ja":"長年の経験から学んだことの一つは〜ということだ","en":"One of the things I've learned over the years is that"},
+  {"id":"s2-p2","type":"phrase","section":"s2","ja":"その状況をただ受け入れるのではなく","en":"Rather than simply accepting the situation,"},
+  {"id":"s2-p3","type":"phrase","section":"s2","ja":"その結果","en":"As a result,"},
+  {"id":"s2-p4","type":"phrase","section":"s2","ja":"分かったのは〜ということだった","en":"What I found was that"},
+  {"id":"s2-p5","type":"phrase","section":"s2","ja":"同時に","en":"At the same time,"},
+  {"id":"s2-p6","type":"phrase","section":"s2","ja":"本当に大事なのは〜だ","en":"What really matters is"},
+  {"id":"s2-p7","type":"phrase","section":"s2","ja":"私は〜する傾向がある","en":"I tend to"},
+  {"id":"s2-s1","type":"sentence","section":"s2","ja":"長年の経験から学んだことの一つは、データがあるだけでは十分ではないということです。","en":"One of the things I've learned over the years is that having data isn't enough."},
+  {"id":"s2-s2","type":"sentence","section":"s2","ja":"情報は、アクセスしやすく、理解しやすく、意思決定に役立つものでなければなりません。","en":"The information has to be easy to access, easy to understand, and useful for making decisions."},
+  {"id":"s2-s3","type":"sentence","section":"s2","ja":"例えば、受注や在庫、リードタイムに関する重要な情報が、いろいろなシステムやファイルに散らばっていることがよくありました。","en":"For example, I often found that important information about orders, inventory, and lead times was spread across different systems and files."},
+  {"id":"s2-s4","type":"sentence","section":"s2","ja":"営業担当者は必要な情報を探すのに時間をかけなければならず、しかもその情報が最新でないこともありました。","en":"Salespeople had to spend time looking for the information they needed, and sometimes the information wasn't up to date."},
+  {"id":"s2-s5","type":"sentence","section":"s2","ja":"その状況をただ受け入れるのではなく、どうすれば改善できるかを考え始めました。","en":"Rather than simply accepting the situation, I started thinking about how I could improve it."},
+  {"id":"s2-s6","type":"sentence","section":"s2","ja":"異なる情報源のデータをまとめ、レポート作成プロセスの一部を自動化し、営業組織全体で使えるPower BIレポートを構築しました。","en":"I brought data from different sources together, automated parts of the reporting process, and built Power BI reports that could be used by the wider sales organization."},
+  {"id":"s2-s7","type":"sentence","section":"s2","ja":"その結果、営業担当者は最新の情報にもっと簡単にアクセスできるようになり、手作業にかける時間も減りました。","en":"As a result, salespeople were able to access updated information more easily and spend less time doing manual work."},
+  {"id":"s2-s8","type":"sentence","section":"s2","ja":"分かったのは、比較的小さな改善でも、組織全体で共有されればずっと大きなインパクトを持ちうるということでした。","en":"What I found was that even a relatively small improvement could have a much bigger impact when it was shared across the organization."},
+  {"id":"s2-s9","type":"sentence","section":"s2","ja":"同時に、最も高度な解決策が必ずしも最良の解決策とは限らないということも学びました。","en":"At the same time, I've learned that the most sophisticated solution isn't always the best solution."},
+  {"id":"s2-s10","type":"sentence","section":"s2","ja":"本当に大事なのは、人々が実際にそれを使うかどうかです。","en":"What really matters is whether people actually use it."},
+  {"id":"s2-s11","type":"sentence","section":"s2","ja":"だからこそ私は、まず実用的なものから始め、人々がどう使うかを見て、時間をかけて改善していくやり方を好みます。","en":"That's why I usually prefer to start with something practical, see how people use it, and improve it over time."},
+  {"id":"s2-s12","type":"sentence","section":"s2","ja":"誰かが問題を解決してくれるのを待つのではなく、まず自分に何ができるかを自問する傾向があります。","en":"Rather than waiting for someone else to solve a problem, I tend to ask myself what I can do about it first."},
+  {"id":"s2-s13","type":"sentence","section":"s2","ja":"そのマインドセットは、私の仕事の仕方における大事な部分になっていると思います。","en":"I think that mindset has become an important part of how I work."},
+
+  {"id":"s3-p1","type":"phrase","section":"s3","ja":"〜に深く関わるようになるにつれて","en":"As I became more involved in"},
+  {"id":"s3-p2","type":"phrase","section":"s3","ja":"言い換えれば","en":"In other words,"},
+  {"id":"s3-p3","type":"phrase","section":"s3","ja":"〜だけが重要なのではない","en":"it's not just about"},
+  {"id":"s3-p4","type":"phrase","section":"s3","ja":"その土台が整ったら","en":"once that foundation is in place,"},
+  {"id":"s3-p5","type":"phrase","section":"s3","ja":"営業の視点から見ると","en":"From a sales perspective,"},
+  {"id":"s3-p6","type":"phrase","section":"s3","ja":"そこにこそ自分が価値を発揮できると思う","en":"That's where I think I can add value."},
+  {"id":"s3-p7","type":"phrase","section":"s3","ja":"結局のところ","en":"Ultimately,"},
+  {"id":"s3-s1","type":"sentence","section":"s3","ja":"データやレポーティングに深く関わるようになるにつれて、私の考え方も変わり始めました。","en":"As I became more involved in data and reporting, my thinking started to change."},
+  {"id":"s3-s2","type":"sentence","section":"s3","ja":"良いダッシュボードを作ることがゴールではないと気づいたのです。","en":"I realized that building a good dashboard wasn't the end goal."},
+  {"id":"s3-s3","type":"sentence","section":"s3","ja":"ダッシュボードはゴールではありません。","en":"A dashboard isn't the goal."},
+  {"id":"s3-s4","type":"sentence","section":"s3","ja":"それは、より良い意思決定のための出発点なのです。","en":"It's the starting point for better decision-making."},
+  {"id":"s3-s5","type":"sentence","section":"s3","ja":"言い換えれば、単に何が起きたかを人々に見せることが重要なのではありません。","en":"In other words, it's not just about showing people what happened."},
+  {"id":"s3-s6","type":"sentence","section":"s3","ja":"本当に大事なのは、その情報を使って何をするかです。","en":"What really matters is what we do with the information."},
+  {"id":"s3-s7","type":"sentence","section":"s3","ja":"これは在庫のことになると特に重要です。","en":"This is especially important when it comes to inventory."},
+  {"id":"s3-s8","type":"sentence","section":"s3","ja":"在庫水準やリードタイム、未処理の受注、販売トレンドを可視化することはできます。","en":"We can visualize inventory levels, lead times, open orders, and sales trends."},
+  {"id":"s3-s9","type":"sentence","section":"s3","ja":"しかし、その土台が整ったら、次に問うべきは「私たちはどんな行動を取るべきか」ということのはずです。","en":"But once that foundation is in place, the next question should be: What action should we take?"},
+  {"id":"s3-s10","type":"sentence","section":"s3","ja":"例えば、在庫や需要の異常な変化を十分早く見つけられれば、それが大きな問題になる前に行動を起こせるかもしれません。","en":"For example, if we can identify unusual changes in inventory or demand early enough, we may be able to take action before they become bigger problems."},
+  {"id":"s3-s11","type":"sentence","section":"s3","ja":"営業の視点から見ると、在庫は単なるサプライチェーンの問題ではありません。","en":"From a sales perspective, inventory isn't just a supply chain issue."},
+  {"id":"s3-s12","type":"sentence","section":"s3","ja":"それは顧客との会話や商談、そして最終的には売上に直接影響を与えうるのです。","en":"It can directly affect customer conversations, opportunities, and ultimately revenue."},
+  {"id":"s3-s13","type":"sentence","section":"s3","ja":"だからこそ、営業と販売代理店、サプライチェーンチームが一緒にその情報を見る必要があると私は考えています。","en":"That's why I believe sales, distributors, and supply chain teams need to look at the information together."},
+  {"id":"s3-s14","type":"sentence","section":"s3","ja":"単にレポートを提供するだけでなく、データをインサイトに、インサイトを行動に変える手助けをしたいと思っています。","en":"Rather than simply providing reports, I'd like to help turn data into insights and insights into action."},
+  {"id":"s3-s15","type":"sentence","section":"s3","ja":"そこにこそ、自分が価値を発揮できる部分があると思っています。","en":"That's where I think I can add value."},
+  {"id":"s3-s16","type":"sentence","section":"s3","ja":"営業側のことは理解していますが、オペレーション側にも、そしてデータがその両者をどうつなげられるかにも関心があります。","en":"I understand the sales side, but I'm also interested in the operational side and in how data can connect the two."},
+  {"id":"s3-s17","type":"sentence","section":"s3","ja":"結局のところ、私が一番興味を持っているのはダッシュボードそのものではありません。","en":"Ultimately, what interests me most is not the dashboard itself."},
+  {"id":"s3-s18","type":"sentence","section":"s3","ja":"情報を使って人々がより良い意思決定をする手助けをし、より良い事業成果を生み出すことです。","en":"It's using information to help people make better decisions and drive better business outcomes."},
+
+  {"id":"s4-p1","type":"phrase","section":"s4","ja":"自分のキャリアを振り返ると〜だと気づいた","en":"Looking back on my career, I've realized that"},
+  {"id":"s4-p2","type":"phrase","section":"s4","ja":"実際","en":"In fact,"},
+  {"id":"s4-p3","type":"phrase","section":"s4","ja":"私が本当に関心があるのは〜だ","en":"What I'm really interested in is"},
+  {"id":"s4-p4","type":"phrase","section":"s4","ja":"まだ学ぶべきことがある","en":"There are still things I need to learn."},
+  {"id":"s4-p5","type":"phrase","section":"s4","ja":"DOMという役割を〜する機会だと捉えている","en":"I see the DOM role as an opportunity to"},
+  {"id":"s4-p6","type":"phrase","section":"s4","ja":"今後は","en":"Going forward,"},
+  {"id":"s4-p7","type":"phrase","section":"s4","ja":"自分の営業成績だけに焦点を当てるのではなく、〜したい","en":"Rather than focusing only on my own sales results, I want to"},
+  {"id":"s4-s1","type":"sentence","section":"s4","ja":"自分のキャリアを振り返ってみると、仕事の中で一番楽しんでいる部分は、物事をより良く機能させる方法を見つけることだと気づきました。","en":"Looking back on my career, I've realized that the part of my work I enjoy most is finding ways to make things work better."},
+  {"id":"s4-s2","type":"sentence","section":"s4","ja":"私は今でも自分の営業経験をとても大切にしています。","en":"I still value my sales experience very highly."},
+  {"id":"s4-s3","type":"sentence","section":"s4","ja":"実際、それがオペレーション上の問題に違った視点でアプローチできる理由の一つだと思っています。","en":"In fact, I think it's one of the reasons I can approach operational problems differently."},
+  {"id":"s4-s4","type":"sentence","section":"s4","ja":"営業担当者が直面する課題を自分自身で経験してきたので、効率化のためだけにプロセスを改善したいとは思いません。","en":"I've experienced the challenges salespeople face firsthand, so I don't want to improve a process just for the sake of efficiency."},
+  {"id":"s4-s5","type":"sentence","section":"s4","ja":"私が本当に関心があるのは、営業担当者が顧客と過ごす時間を増やし、より良い意思決定をし、最終的にはより多くの売上を生み出せる環境を作ることです。","en":"What I'm really interested in is creating an environment where salespeople can spend more time with customers, make better decisions, and ultimately generate more revenue."},
+  {"id":"s4-s6","type":"sentence","section":"s4","ja":"だからこそ、営業とデータ、テクノロジー、オペレーションを組み合わせられる役割に進むことに関心があります。","en":"That's why I'm interested in moving into a role that allows me to combine sales, data, technology, and operations."},
+  {"id":"s4-s7","type":"sentence","section":"s4","ja":"もちろん、まだ学ぶべきことはあります。","en":"There are still things I need to learn, of course."},
+  {"id":"s4-s8","type":"sentence","section":"s4","ja":"すべての答えを持っているわけではありませんし、正式なセールスオペレーションの役職に就いた経験もありません。","en":"I don't have all the answers, and I haven't worked in a formal Sales Operations role before."},
+  {"id":"s4-s9","type":"sentence","section":"s4","ja":"同時に、この種の仕事にとって重要だと思うスキルや視点を、私はすでに数多く持っています。","en":"At the same time, I already have many of the skills and perspectives that I think are important for this kind of work."},
+  {"id":"s4-s10","type":"sentence","section":"s4","ja":"私はDOMという役割を、これまで自分がしてきたことを土台にしながら、流通オペレーションと在庫管理についてより深い理解を築いていける機会だと捉えています。","en":"I see the DOM role as an opportunity to build on what I've already been doing while developing a deeper understanding of distribution operations and inventory management."},
+  {"id":"s4-s11","type":"sentence","section":"s4","ja":"今後は、セールスオペレーションやレベニューオペレーションへとさらに経験を広げていきたいと考えています。","en":"Going forward, I'd like to broaden my experience further into Sales Operations and Revenue Operations."},
+  {"id":"s4-s12","type":"sentence","section":"s4","ja":"自分自身の営業成績だけに焦点を当てるのではなく、組織全体がより良く機能できるようにする仕組みやプロセスづくりに貢献したいと思っています。","en":"Rather than focusing only on my own sales results, I want to help build systems and processes that enable the whole organization to perform better."},
+  {"id":"s4-s13","type":"sentence","section":"s4","ja":"それが、私がキャリアの次のステージで進みたい方向です。","en":"That's the direction I want to take in the next stage of my career."}
+]
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var STORAGE_KEY = "careerEisakubunApp.v1";
+  var ITEMS = JSON.parse(document.getElementById("item-data").textContent);
+  var SECTIONS = [
+    {id:"s1", label:"S1"},
+    {id:"s2", label:"S2"},
+    {id:"s3", label:"S3"},
+    {id:"s4", label:"S4"}
+  ];
+  var BOX_WEIGHT = [10, 6, 3, 1]; // box 0..3, box>=3 = mastered
+  var MAX_BOX = 3;
+
+  var defaultState = {
+    section: "all",
+    qtype: "mixed",
+    items: {},   // id -> {box, correct, wrong, lastAt}
+    reviews: []  // isoTimestamps of every rating
+  };
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return JSON.parse(JSON.stringify(defaultState));
+      var parsed = JSON.parse(raw);
+      var merged = Object.assign({}, defaultState, parsed);
+      merged.items = parsed.items || {};
+      merged.reviews = parsed.reviews || [];
+      return merged;
+    }catch(e){
+      console.error("load failed", e);
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+  }
+  function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  var state = loadState();
+
+  function itemState(id){
+    if(!state.items[id]) state.items[id] = {box:0, correct:0, wrong:0, lastAt:null};
+    return state.items[id];
+  }
+
+  function todayStr(d){
+    d = d || new Date();
+    var y = d.getFullYear(), m = ("0"+(d.getMonth()+1)).slice(-2), day=("0"+d.getDate()).slice(-2);
+    return y+"-"+m+"-"+day;
+  }
+  function dailyCounts(reviews){
+    var map = {};
+    reviews.forEach(function(ts){
+      var d = todayStr(new Date(ts));
+      map[d] = (map[d]||0)+1;
+    });
+    return map;
+  }
+  function computeStreak(reviews){
+    if(reviews.length===0) return 0;
+    var map = dailyCounts(reviews);
+    var cur = new Date();
+    var cursorStr = todayStr(cur);
+    if(!map[cursorStr]){
+      var y = new Date(cur); y.setDate(y.getDate()-1);
+      if(!map[todayStr(y)]) return 0;
+      cur = y;
+    }
+    var streak = 0;
+    while(true){
+      var ds = todayStr(cur);
+      if(map[ds]){ streak++; cur.setDate(cur.getDate()-1); } else break;
+    }
+    return streak;
+  }
+
+  // ---------- tabs / segmented control ----------
+  var tabsEl = document.getElementById("tabs");
+  var allTabDefs = [{id:"all", label:"全部"}].concat(SECTIONS);
+  allTabDefs.forEach(function(t){
+    var btn = document.createElement("button");
+    btn.className = "tab";
+    btn.textContent = t.label;
+    btn.dataset.id = t.id;
+    btn.addEventListener("click", function(){
+      state.section = t.id;
+      saveState();
+      nextCard();
+      renderChrome();
+    });
+    tabsEl.appendChild(btn);
+  });
+
+  var typeSegEl = document.getElementById("typeSeg");
+  var typeDefs = [{id:"mixed", label:"ミックス"}, {id:"phrase", label:"フレーズ"}, {id:"sentence", label:"文"}];
+  typeDefs.forEach(function(t){
+    var btn = document.createElement("button");
+    btn.className = "seg";
+    btn.textContent = t.label;
+    btn.dataset.id = t.id;
+    btn.addEventListener("click", function(){
+      state.qtype = t.id;
+      saveState();
+      nextCard();
+      renderChrome();
+    });
+    typeSegEl.appendChild(btn);
+  });
+
+  function getPool(){
+    return ITEMS.filter(function(it){
+      var secOk = state.section === "all" || it.section === state.section;
+      var typeOk = state.qtype === "mixed" || it.type === state.qtype;
+      return secOk && typeOk;
+    });
+  }
+
+  // ---------- weighted random pick ----------
+  var currentItem = null;
+  var revealed = false;
+
+  function weightFor(id){
+    var box = itemState(id).box;
+    return BOX_WEIGHT[Math.min(box, BOX_WEIGHT.length-1)];
+  }
+
+  function pickItem(pool, excludeId){
+    var candidates = pool.length > 1 && excludeId ? pool.filter(function(it){return it.id!==excludeId;}) : pool;
+    if(candidates.length===0) candidates = pool;
+    var total = 0;
+    var weights = candidates.map(function(it){ var w = weightFor(it.id); total += w; return w; });
+    var r = Math.random() * total;
+    var acc = 0;
+    for(var i=0;i<candidates.length;i++){
+      acc += weights[i];
+      if(r <= acc) return candidates[i];
+    }
+    return candidates[candidates.length-1];
+  }
+
+  function nextCard(){
+    var pool = getPool();
+    if(pool.length===0){
+      currentItem = null;
+      revealed = false;
+      renderCard();
+      return;
+    }
+    currentItem = pickItem(pool, currentItem ? currentItem.id : null);
+    revealed = false;
+    renderCard();
+  }
+
+  // ---------- rendering ----------
+  function showToast(msg, duration){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(function(){ t.classList.remove("show"); }, duration || 1200);
+  }
+
+  function renderCard(){
+    var badgesEl = document.getElementById("cardBadges");
+    var promptEl = document.getElementById("promptJa");
+    var revealEl = document.getElementById("revealArea");
+    badgesEl.innerHTML = "";
+    revealEl.innerHTML = "";
+
+    if(!currentItem){
+      promptEl.textContent = "この条件に該当する問題がありません。";
+      return;
+    }
+
+    var typeBadge = document.createElement("span");
+    typeBadge.className = "badge " + currentItem.type;
+    typeBadge.textContent = currentItem.type === "phrase" ? "フレーズ" : "文";
+    badgesEl.appendChild(typeBadge);
+
+    var secBadge = document.createElement("span");
+    secBadge.className = "badge boxlv";
+    secBadge.textContent = currentItem.section.toUpperCase();
+    badgesEl.appendChild(secBadge);
+
+    var st = itemState(currentItem.id);
+    if(st.box >= MAX_BOX){
+      var mBadge = document.createElement("span");
+      mBadge.className = "badge boxlv";
+      mBadge.textContent = "習得済み";
+      badgesEl.appendChild(mBadge);
+    }
+
+    promptEl.textContent = currentItem.ja;
+
+    if(!revealed){
+      var revealBtn = document.createElement("button");
+      revealBtn.className = "reveal-btn";
+      revealBtn.type = "button";
+      revealBtn.textContent = "英文を見る";
+      revealBtn.addEventListener("click", function(){
+        revealed = true;
+        renderCard();
+      });
+      revealEl.appendChild(revealBtn);
+    } else {
+      var enBox = document.createElement("div");
+      enBox.className = "en-text";
+      enBox.textContent = currentItem.en;
+      revealEl.appendChild(enBox);
+
+      var rateRow = document.createElement("div");
+      rateRow.className = "rate-row";
+      var okBtn = document.createElement("button");
+      okBtn.className = "rate-btn ok";
+      okBtn.type = "button";
+      okBtn.textContent = "○ 言えた";
+      okBtn.addEventListener("click", function(){ rate(true); });
+      var ngBtn = document.createElement("button");
+      ngBtn.className = "rate-btn ng";
+      ngBtn.type = "button";
+      ngBtn.textContent = "× 言えなかった";
+      ngBtn.addEventListener("click", function(){ rate(false); });
+      rateRow.appendChild(okBtn);
+      rateRow.appendChild(ngBtn);
+      revealEl.appendChild(rateRow);
+    }
+  }
+
+  function rate(correct){
+    if(!currentItem) return;
+    var st = itemState(currentItem.id);
+    if(correct){
+      st.box = Math.min(MAX_BOX, st.box+1);
+      st.correct++;
+    } else {
+      st.box = 0;
+      st.wrong++;
+    }
+    st.lastAt = new Date().toISOString();
+    state.reviews.push(st.lastAt);
+    saveState();
+    showToast(correct ? "○ 記録しました" : "× 記録しました。もう一度出てきます");
+    renderChrome();
+    nextCard();
+  }
+
+  var RING_R = 15.5, RING_C = 2*Math.PI*RING_R;
+  document.getElementById("ringFg").style.strokeDasharray = RING_C.toFixed(2);
+
+  function renderChrome(){
+    Array.prototype.forEach.call(tabsEl.children, function(btn){
+      btn.classList.toggle("active", btn.dataset.id === state.section);
+    });
+    Array.prototype.forEach.call(typeSegEl.children, function(btn){
+      btn.classList.toggle("active", btn.dataset.id === state.qtype);
+    });
+
+    var pool = getPool();
+    var mastered = 0, correctSum = 0, wrongSum = 0;
+    pool.forEach(function(it){
+      var st = itemState(it.id);
+      if(st.box >= MAX_BOX) mastered++;
+      correctSum += st.correct;
+      wrongSum += st.wrong;
+    });
+    var pct = pool.length ? Math.round(mastered/pool.length*100) : 0;
+    document.getElementById("masteredCount").textContent = mastered;
+    document.getElementById("poolCount").textContent = pool.length;
+    document.getElementById("ringPct").textContent = pct + "%";
+    var offset = RING_C * (1 - pct/100);
+    document.getElementById("ringFg").style.strokeDashoffset = offset.toFixed(2);
+
+    var reviews = state.reviews;
+    var todayC = dailyCounts(reviews)[todayStr()] || 0;
+    document.getElementById("todayCount").textContent = todayC;
+    document.getElementById("streakCount").textContent = computeStreak(reviews);
+    var totalAns = correctSum + wrongSum;
+    document.getElementById("accRate").textContent = totalAns ? Math.round(correctSum/totalAns*100)+"%" : "–";
+
+    // chart: last 14 days
+    var chartEl = document.getElementById("chart");
+    var labelsEl = document.getElementById("chartLabels");
+    chartEl.innerHTML = ""; labelsEl.innerHTML = "";
+    var map = dailyCounts(reviews);
+    var arr = [];
+    for(var i=13;i>=0;i--){
+      var dd = new Date(); dd.setDate(dd.getDate()-i);
+      var ds = todayStr(dd);
+      arr.push({date:ds, n: map[ds]||0, label: (dd.getMonth()+1)+"/"+dd.getDate()});
+    }
+    var maxN = Math.max(1, Math.max.apply(null, arr.map(function(a){return a.n;})));
+    arr.forEach(function(a){
+      var bar = document.createElement("div");
+      bar.className = "bar" + (a.n>0 ? " hasval":"");
+      var h = a.n>0 ? Math.max(4, Math.round((a.n/maxN)*66)) : 2;
+      bar.style.height = h+"px";
+      bar.title = a.date + ": " + a.n + "回";
+      chartEl.appendChild(bar);
+      var lbl = document.createElement("span");
+      lbl.textContent = (a.date===todayStr()) ? "今日" : a.label;
+      labelsEl.appendChild(lbl);
+    });
+  }
+
+  // ---------- settings ----------
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    var pool = getPool();
+    var label = state.section === "all" ? "全部" : state.section.toUpperCase();
+    label += " / " + (state.qtype==="mixed"?"ミックス":state.qtype==="phrase"?"フレーズ":"文");
+    if(confirm("「" + label + "」の記録をリセットします。よろしいですか？")){
+      pool.forEach(function(it){ delete state.items[it.id]; });
+      saveState();
+      renderChrome();
+      nextCard();
+      showToast("記録をリセットしました");
+    }
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", function(){
+    var blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "career-eisakubun-backup-" + todayStr() + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", function(){
+    document.getElementById("importFile").click();
+  });
+  document.getElementById("importFile").addEventListener("change", function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var data = JSON.parse(reader.result);
+        if(!data.items) throw new Error("invalid format");
+        if(confirm("現在の記録を、読み込んだバックアップで上書きします。よろしいですか？")){
+          state = Object.assign({}, defaultState, data);
+          state.items = data.items || {};
+          state.reviews = data.reviews || [];
+          saveState();
+          renderChrome();
+          nextCard();
+          showToast("バックアップを読み込みました");
+        }
+      }catch(err){
+        alert("読み込みに失敗しました: ファイル形式を確認してください。");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  renderChrome();
+  nextCard();
+})();
+</script>
+</body>
+</html>

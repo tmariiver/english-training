@@ -727,6 +727,7 @@
     if(!synth) return;
     var all = synth.getVoices();
     availableVoices = all.filter(function(v){ return /^en/i.test(v.lang); });
+    var noEnglishVoice = availableVoices.length===0 && all.length>0;
     if(availableVoices.length===0) availableVoices = all;
     voiceSelect.innerHTML = "";
     if(availableVoices.length===0){
@@ -735,6 +736,12 @@
       voiceSelect.appendChild(opt);
       return;
     }
+    if(noEnglishVoice){
+      speechStatus.textContent = "⚠ 英語の音声が見つからないため、他の言語の音声を表示しています。Windowsの「設定」→「時刻と言語」→「音声」から英語の音声を追加してください。";
+    } else if(speechStatus.dataset.noEnglishWarning){
+      speechStatus.textContent = "";
+    }
+    speechStatus.dataset.noEnglishWarning = noEnglishVoice ? "1" : "";
     availableVoices.forEach(function(v){
       var opt = document.createElement("option");
       opt.value = v.name;
